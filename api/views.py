@@ -19,12 +19,23 @@ from django.core.cache import cache
 import random
 import string
 import logging
+import pdfkit
 
 logger = logging.getLogger("my-log")
 
 class test(APIView):
     def get(self, request):
-        logger.warning("new one >>>>>>>>>>>>>>>>>")
+        
+        return render(
+            request,
+            "payment.html"
+        )
 
+
+class CreatePDF(APIView):
+    def get(self, request):
+        
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        rslt = pdfkit.from_url('http://127.0.0.1:8000/api/test/', 'media/tuttu.pdf', configuration=config)
+        print("pdf creation : ", rslt)
         return Response(status=200)
-    

@@ -9,5 +9,7 @@ router.register(r'test', views.test, basename='test')
 
 urlpatterns = [
     path('test/', views.test.as_view()),
+    path("create-pdf", views.CreatePDF.as_view()),
+    
 
 ]

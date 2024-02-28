@@ -66,11 +66,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -150,6 +150,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+MEDIA_URL = "media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 STATIC_URL = 'static/'
 STATIC_ROOT = "static/"
 
@@ -199,3 +202,40 @@ LOGGING = {
         },
     },
 }
+
+
+
+# [Unit]
+# Description=gunicorn daemon
+# Requires=gunicorn.socket
+# After=network.target
+
+# [Service]
+# User=ubuntu
+# Group=www-data
+# WorkingDirectory=/home/ubuntu/test_server
+# ExecStart=/home/ubuntu/env/bin/gunicorn \
+#           --access-logfile - \
+#           --workers 3 \
+#           --bind unix:/run/gunicorn.sock \
+#           config.wsgi:application
+
+# [Install]
+# WantedBy=multi-user.target
+
+
+
+# server {
+#     listen 80;
+#     server_name 16.16.172.197;
+
+#     location = /favicon.ico { access_log off; log_not_found off; }
+#     location /static/ {
+#         alias /home/ubuntu/test_server/static/;
+#     }
+
+#     location / {
+#         include proxy_params;
+#         proxy_pass http://unix:/run/gunicorn.sock;
+#     }
+# }
